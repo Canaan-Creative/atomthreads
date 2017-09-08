@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2017, xuzhenxing.
- * All rights reserved.
+ * Copyright (c) 2017, Mikeqin. All rights reserved.
+ * Copyright (c) 2017, xuzhenxing. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -32,9 +32,6 @@
 #include "atomport.h"
 #include "atomport-asm-macros.h"
 
-/* Used for managing nesting of atomport.h critical sections */
-uint32_t at_preempt_count = 0;
-
 /**
  * This function initialises each thread's stack during creation, before the
  * thread is first run. New threads are scheduled in using the same
@@ -65,13 +62,7 @@ void archThreadContextInit (ATOM_TCB *tcb_ptr, void *stack_top,
 
 	STORE_VAL(stack_start, sp, stack_start);
 	STORE_VAL(stack_start, fp, stack_start);
-	STORE_VAL(stack_start, r3, 0);
-	STORE_VAL(stack_start, r4, 0);
-	STORE_VAL(stack_start, r5, 0);
-	STORE_VAL(stack_start, r6, 0);
-	STORE_VAL(stack_start, r7, 0);
-	STORE_VAL(stack_start, r8, 0);
-	STORE_VAL(stack_start, pc, 0);
 	STORE_VAL(stack_start, ra, entry_point);
-	STORE_VAL(stack_start, r3, entry_param);
+	STORE_VAL(stack_start, r1, entry_param);
 }
+

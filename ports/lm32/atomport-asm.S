@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2017, Mikeqin. All rights reserved.
  * Copyright (c) 2017, xuzhenxing. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,13 +39,10 @@
  */
 .globl contextExitCritical
 contextExitCritical:
-    	/* Enalbe interrupt return func call */
-	ori r15, r15, 0x0007
-    	wcsr IE, r15
-    	nop
-    	nop
-    	nop
-    	ret
+	/* Enalbe interrupt return func call */
+	ori r1, r1, 0x7
+	wcsr IE, r1
+	ret
 
 /**
  * @brief Enter threads switch
@@ -55,9 +53,6 @@ contextExitCritical:
 contextEnterCritical:
     	/* Disable interrupt, direct to writing r0 to IE */
     	wcsr IE, r0
-    	nop
-    	nop
-    	nop
     	ret
 
 /**
@@ -73,73 +68,25 @@ archContextSwitch:
     	wcsr IE, r0
 
     	/* R1 is argument0, save old_tcb when we return from here */
-    	/* R9 and R10 use to temp memory */
-    	mv r9, r1
-    	lw r10, (r9+0)
-    
-    	mvhi r9, r1_IDX
-    	sli r9, r9, 2
-    	add r9, r10, r9
-    	/* Save r3 */
-    	sw (r9+8), r3
-    	/* Save r4 */
-   	sw (r9+12), r4 
-    	/* Save r5 */
-    	sw (r9+16), r5 
-    	/* Save r6 */
-    	sw (r9+20), r6 
-    	/* Save r7 */
-    	sw (r9+24), r7
-    	/* Save r8 */
-    	sw (r9+28), r8
-    	/* Save gp */
-    	sw (r9+40), gp 
-    	/* Save fp */
-    	sw (r9+44), fp 
-    	/* Save sp */
-    	sw (r9+48), sp
-    	/* Save ra */
-    	sw (r9+52), ra
+	lw r25, (r1+0)
+
+	SAVE_REG(r25, fp)
+	SAVE_REG(r25, sp)
+	SAVE_REG(r25, ra)
 
     	/* R2 is argument1, load new_tcb data to memory */
-    	/* R11 and R12 use to temp memory */
-    	mv r11, r2
-    	lw r12, (r11+0)
+	lw r25, (r2+0)
    
-    	mvhi r11, r1_IDX
-    	sli r11, r11, 2
-    	add r11, r12, r11
-    	/* Load r3 */
-    	lw r3, (r11+8)
-    	/* Load r4 */
-    	lw r4, (r11+12)
-    	/* Load r5 */
-    	lw r5, (r11+16)
-    	/* Load r6 */
-    	lw r6, (r11+20)
-    	/* Load r7 */
-    	lw r7, (r11+24)
-    	/* Load r8 */
-    	lw r8, (r11+28)
-    	/* Load gp */
-    	lw gp, (r11+40)
-    	/* Load fp */
-    	lw fp, (r11+44)
-    	/* Load sp */
-    	lw sp, (r11+48)
-    	/* Load ra */
-    	lw ra, (r11+52)
-	/* thread entry param */
-	lw r1, (r11+8)
-    	nop
-    	nop
-    	nop
+	LOAD_REG(r25, fp)
+	LOAD_REG(r25, sp)
+	LOAD_REG(r25, ra)
+
+	lw r1, (r25+(r1_IDX * 4))
+
    	/* Enable global interrupts */
-	ori r15, r15, 0x0007
-   	wcsr IE, r15
-   	nop
-   	nop
-   	nop
+	ori r2, r2, 0x7
+	wcsr IE, r2
+
    	/* Return call function */
    	ret
 
@@ -161,42 +108,17 @@ archFirstThreadRestore:
     	wcsr IE, r0
 
     	/* R1 is argument0, load first thread */
-    	mv r13, r1
-    	lw r14, (r13+0)
+	lw r25, (r1+0)
 
-    	mvhi r13, r1_IDX
-    	sli r13, r13, 2
-    	add r13, r14, r13    
-    	/* Load r3 */
-    	lw r3, (r13+8)
-    	/* Load r4 */
-    	lw r4, (r13+12)
-    	/* Load r5 */
-    	lw r5, (r13+16)
-    	/* Load r6 */
-    	lw r6, (r13+20)
-    	/* Load r7 */
-    	lw r7, (r13+24)
-    	/* Load r8 */
-    	lw r8, (r13+28)
-    	/* Load gp */
-    	lw gp, (r13+40)
-    	/* Load fp */
-    	lw fp, (r13+44)
-    	/* Load sp */
-    	lw sp, (r13+48)
-    	/* Load ra */
-    	lw ra, (r13+52)
-	/* thread entry param */
-	lw r1, (r13+8)
-    	nop
-    	nop
-    	nop
+	LOAD_REG(r25, fp)
+	LOAD_REG(r25, sp)
+	LOAD_REG(r25, ra)
+
+	lw r1, (r25+(r1_IDX * 4))
+
     	/* Enable global interrupts */
-	ori r15, r15, 0x0007
-    	wcsr IE, r15
-    	nop
-    	nop
-    	nop
+	ori r2, r2, 0x7
+	wcsr IE, r2
+
     	/* Return call function */
     	ret

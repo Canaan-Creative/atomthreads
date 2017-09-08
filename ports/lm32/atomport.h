@@ -30,40 +30,19 @@
 #ifndef __ATOM_PORT_H
 #define __ATOM_PORT_H
 
-/* Required number of system ticks per second (normally 100 for 10ms tick) */
-#define SYSTEM_TICKS_PER_SEC            20
+#include <stddef.h>
+#include <stdint.h>
 
-/**
- * Definition of NULL. stddef.h not available on this platform.
- */
-/* Add lm32 platform, redefine NULL, for modify */
-#define NULL 0
+#define SYSTEM_TICKS_PER_SEC           100
 
-/* Size of each stack entry / stack alignment size (32 bits on MIPS) */
+/* Size of each stack entry / stack alignment size (32 bits on LatticeMico32) */
 #define STACK_ALIGN_SIZE                sizeof(uint32_t)
 
 /**
- * Architecture-specific types.
- * Provide stdint.h style types.
- */
-#define uint8_t   unsigned char
-#define uint16_t  unsigned short
-#define uint32_t  unsigned long
-#define uint64_t  unsigned long long
-#define int8_t    char
-#define int16_t   short
-#define int32_t   long
-#define int64_t   long long
+  * Architecture-specific types.
+  */
 #define POINTER   void *
 #define UINT32    uint32_t
-
-/**
- * Critical region protection: this should disable interrupts
- * to protect OS data structures during modification. It must
- * allow nested calls, which means that interrupts should only
- * be re-enabled when the outer CRITICAL_END() is reached.
- */
-extern uint32_t at_preempt_count;
 
 /**
  *
