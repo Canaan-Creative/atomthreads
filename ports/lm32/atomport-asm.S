@@ -64,9 +64,6 @@ contextEnterCritical:
  */
 .globl archContextSwitch
 archContextSwitch:
-    	/* Disable global interrupt */
-    	wcsr IE, r0
-
     	/* R1 is argument0, save old_tcb when we return from here */
 	lw r25, (r1+0)
 
@@ -104,9 +101,6 @@ archContextSwitch:
  */
 .globl archFirstThreadRestore
 archFirstThreadRestore:
-    	/* Disable global interrupts */
-    	wcsr IE, r0
-
     	/* R1 is argument0, load first thread */
 	lw r25, (r1+0)
 

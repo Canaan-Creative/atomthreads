@@ -29,7 +29,6 @@
  */
 
 #include "atom.h"
-#include "atomport.h"
 #include "atomport-asm-macros.h"
 
 /**
@@ -49,8 +48,8 @@
  * it in the thread's context.
  */
 void archThreadContextInit (ATOM_TCB *tcb_ptr, void *stack_top,
-                            void (*entry_point)(UINT32),
-                            UINT32 entry_param)
+                            void (*entry_point)(uint32_t),
+                            uint32_t entry_param)
 {
 #define STORE_VAL(base, reg, val) \
 	*((uint32_t *)(base + ((reg ## _IDX) * WORD_SIZE))) = (uint32_t)val
