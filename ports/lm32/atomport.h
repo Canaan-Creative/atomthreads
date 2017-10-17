@@ -42,7 +42,6 @@
   * Architecture-specific types.
   */
 #define POINTER   void *
-#define UINT32    uint32_t
 
 /**
  *

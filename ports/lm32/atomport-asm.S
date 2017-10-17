@@ -64,14 +64,12 @@ contextEnterCritical:
  */
 .globl archContextSwitch
 archContextSwitch:
-    	/* Disable global interrupt */
-    	wcsr IE, r0
-
     	/* R1 is argument0, save old_tcb when we return from here */
 	lw r25, (r1+0)
 
 	SAVE_REG(r25, fp)
 	SAVE_REG(r25, sp)
+	SAVE_REG(r25, gp)
 	SAVE_REG(r25, ra)
 
     	/* R2 is argument1, load new_tcb data to memory */
@@ -79,6 +77,7 @@ archContextSwitch:
    
 	LOAD_REG(r25, fp)
 	LOAD_REG(r25, sp)
+	LOAD_REG(r25, gp)
 	LOAD_REG(r25, ra)
 
 	lw r1, (r25+(r1_IDX * 4))
@@ -104,14 +103,12 @@ archContextSwitch:
  */
 .globl archFirstThreadRestore
 archFirstThreadRestore:
-    	/* Disable global interrupts */
-    	wcsr IE, r0
-
     	/* R1 is argument0, load first thread */
 	lw r25, (r1+0)
 
 	LOAD_REG(r25, fp)
 	LOAD_REG(r25, sp)
+	LOAD_REG(r25, gp)
 	LOAD_REG(r25, ra)
 
 	lw r1, (r25+(r1_IDX * 4))

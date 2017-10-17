@@ -30,12 +30,8 @@
 #ifndef __ATOM_PORT_TESTS_H
 #define __ATOM_PORT_TESTS_H
 
-/* Include Atomthreads kernel API */
-#include "atom.h"
-
 /* Prerequisite include for ATOMLOG() macro (via printf) */
 /* Logger macro for viewing test results */
-
 #define ATOMLOG(...)	do {	\
 		;		\
 	}while(0)

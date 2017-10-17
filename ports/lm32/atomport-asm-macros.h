@@ -39,9 +39,10 @@
 #define r1_IDX		0
 #define fp_IDX		1
 #define sp_IDX		2
-#define ra_IDX		3
+#define gp_IDX		3
+#define ra_IDX		4
 
-#define NUM_CTX_REGS	4
+#define NUM_CTX_REGS	5
 
 #define SAVE_REG(treg, reg)                     \
 	sw (treg+((reg ## _IDX)*4)), reg
