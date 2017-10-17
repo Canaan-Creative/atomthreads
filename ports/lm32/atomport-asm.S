@@ -69,6 +69,7 @@ archContextSwitch:
 
 	SAVE_REG(r25, fp)
 	SAVE_REG(r25, sp)
+	SAVE_REG(r25, gp)
 	SAVE_REG(r25, ra)
 
     	/* R2 is argument1, load new_tcb data to memory */
@@ -76,6 +77,7 @@ archContextSwitch:
    
 	LOAD_REG(r25, fp)
 	LOAD_REG(r25, sp)
+	LOAD_REG(r25, gp)
 	LOAD_REG(r25, ra)
 
 	lw r1, (r25+(r1_IDX * 4))
@@ -106,6 +108,7 @@ archFirstThreadRestore:
 
 	LOAD_REG(r25, fp)
 	LOAD_REG(r25, sp)
+	LOAD_REG(r25, gp)
 	LOAD_REG(r25, ra)
 
 	lw r1, (r25+(r1_IDX * 4))
